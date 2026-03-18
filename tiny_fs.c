@@ -68,7 +68,10 @@ static tiny_fs_file_t* _tiny_fs_htab_search_shared(
     );
     for (size_t i=0; i<vec->buf_size; ++i) {
         tiny_fs_htab_elem_t* item = vec->buf + i;
-        if (strcmp(item->key, key) == 0) {
+        if (
+            item->key != NULL
+            && strcmp(item->key, key) == 0
+        ) {
             return item->v;
         }
     }
