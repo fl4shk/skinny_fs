@@ -84,7 +84,6 @@ typedef TINY_FS_BYTE_COUNT_TYPE tiny_fs_byte_count_t;
 typedef size_t tiny_fs_byte_count_t;
 #endif
 
-
 void* tiny_fs_file_init(
     const char* filename, uint8_t* buf, size_t size
 );
