@@ -66,14 +66,73 @@ extern "C" {
 //extern tiny_fs_file_t tiny_fs_head;
 extern tiny_fs_htab_t* tiny_fs_htab;
 
-void* tiny_fs_file_init(const char* filename, uint8_t* buf, size_t size);
-void* tiny_fs_fopen(const char* filename, const char* mode);
+//#ifndef TINY_FS_BYTE_COUNT_INT
+//typedef size_t tiny_fs_byte_count_t;
+//#else       // if defined(TINY_FS_BYTE_COUNT_INT)
+//typedef int tiny_fs_byte_count_t;
+//#endif      // TINY_FS_BYTE_COUNT_INT
+
+#ifdef TINY_FS_SINT_TYPE
+typedef TINY_FS_SINT_TYPE tiny_fs_sint_t;
+#else
+typedef long long int tiny_fs_sint_t;
+#endif
+
+#ifdef TINY_FS_BYTE_COUNT_TYPE
+typedef TINY_FS_BYTE_COUNT_TYPE tiny_fs_byte_count_t;
+#else
+typedef size_t tiny_fs_byte_count_t;
+#endif
+
+
+void* tiny_fs_file_init(
+    const char* filename, uint8_t* buf, size_t size
+);
+void* tiny_fs_fopen(
+    const char* filename, const char* mode
+);
 void tiny_fs_fclose(void* handle);
-int tiny_fs_fread(void* handle, void* buf, int byte_count);
-int tiny_fs_fwrite(void* handle, const void* buf, int byte_count);
-int tiny_fs_fseek(void* handle, int offset, tiny_fs_seek_t origin);
-int tiny_fs_ftell(void* handle);
-int tiny_fs_feof(void* handle);
+tiny_fs_sint_t tiny_fs_fread(
+    void* handle, void* buf, tiny_fs_byte_count_t byte_count
+);
+tiny_fs_sint_t tiny_fs_fwrite(
+    void* handle, const void* buf, tiny_fs_byte_count_t byte_count
+);
+tiny_fs_sint_t tiny_fs_fseek(
+    void* handle, tiny_fs_sint_t offset, tiny_fs_seek_t origin
+);
+tiny_fs_sint_t tiny_fs_ftell(void* handle);
+tiny_fs_sint_t tiny_fs_feof(void* handle);
+
+
+//#ifdef TINY_FS_POSIX_IO
+//#include "tiny_fs.h"
+//#include <stdio.h>
+//#include <sys/fcntl.h>
+//
+////union {
+////        ssize_t (*read_int)(int fd, void *buf, size_t count);
+////        ssize_t (*read_ptr)(void *ptr, void *buf, size_t count);
+////};
+////union {
+////        ssize_t (*write_int)(int fd, const void *buf, size_t count);
+////        ssize_t (*write_ptr)(void *ptr, const void *buf, size_t count);
+////};
+////union {
+////        __off_t (*lseek_int)(int fd, __off_t offset, int whence);
+////        __off_t (*lseek_ptr)(void *ptr, __off_t offset, int whence);
+////};
+////union {
+////        int     (*close_int)(int fd);
+////        int     (*close_ptr)(void *ptr);
+////};
+////int tiny_fs_posix_open(const char* path, int mode, ...);
+////size_t tiny_fs_posix_read(int fd, void* buf, size_t count);
+////size_t tiny_fs_posix_write(int fd, void* buf, size_t count);
+////long int tiny_fs_posix_lseek(int fd, long int offset, int whence);
+////int tiny_fs_posix_close(int fd);
+//
+//#endif      // TINY_FS_POSIX_IO
 
 #ifdef __cplusplus
 } // extern "C"

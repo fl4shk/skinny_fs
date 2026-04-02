@@ -291,7 +291,9 @@ void tiny_fs_fclose(void* handle) {
     tiny_fs_handle_t* self = (tiny_fs_handle_t*)handle;
     free(self);
 }
-int tiny_fs_fread(void* handle, void* buf, int byte_count) {
+tiny_fs_sint_t tiny_fs_fread(
+    void* handle, void* buf, tiny_fs_byte_count_t byte_count
+) {
     tiny_fs_handle_t* self = (tiny_fs_handle_t*)handle;
     if (byte_count <= 0) {
         return 0;
@@ -306,7 +308,9 @@ int tiny_fs_fread(void* handle, void* buf, int byte_count) {
         return temp_size;
     }
 }
-int tiny_fs_fwrite(void* handle, const void* buf, int byte_count) {
+tiny_fs_sint_t tiny_fs_fwrite(
+    void* handle, const void* buf, tiny_fs_byte_count_t byte_count
+) {
     tiny_fs_handle_t* self = (tiny_fs_handle_t*)handle;
     if (byte_count <= 0) {
         return 0;
@@ -323,7 +327,9 @@ int tiny_fs_fwrite(void* handle, const void* buf, int byte_count) {
     self->pos += byte_count;
     return byte_count;
 }
-int tiny_fs_fseek(void* handle, int offset, tiny_fs_seek_t origin) {
+tiny_fs_sint_t tiny_fs_fseek(
+    void* handle, tiny_fs_sint_t offset, tiny_fs_seek_t origin
+) {
     tiny_fs_handle_t* self = (tiny_fs_handle_t*)handle;
     switch (origin) {
     case TINY_FS_SEEK_SET:
@@ -346,11 +352,11 @@ int tiny_fs_fseek(void* handle, int offset, tiny_fs_seek_t origin) {
     }
     return 0;
 }
-int tiny_fs_ftell(void* handle) {
+tiny_fs_sint_t tiny_fs_ftell(void* handle) {
     tiny_fs_handle_t* self = (tiny_fs_handle_t*)handle;
     return self->pos;
 }
-int tiny_fs_feof(void* handle) {
+tiny_fs_sint_t tiny_fs_feof(void* handle) {
     tiny_fs_handle_t* self = (tiny_fs_handle_t*)handle;
     return self->pos >= self->f->size;
 }
