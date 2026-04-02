@@ -104,36 +104,6 @@ tiny_fs_sint_t tiny_fs_fseek(
 tiny_fs_sint_t tiny_fs_ftell(void* handle);
 tiny_fs_sint_t tiny_fs_feof(void* handle);
 
-
-//#ifdef TINY_FS_POSIX_IO
-//#include "tiny_fs.h"
-//#include <stdio.h>
-//#include <sys/fcntl.h>
-//
-////union {
-////        ssize_t (*read_int)(int fd, void *buf, size_t count);
-////        ssize_t (*read_ptr)(void *ptr, void *buf, size_t count);
-////};
-////union {
-////        ssize_t (*write_int)(int fd, const void *buf, size_t count);
-////        ssize_t (*write_ptr)(void *ptr, const void *buf, size_t count);
-////};
-////union {
-////        __off_t (*lseek_int)(int fd, __off_t offset, int whence);
-////        __off_t (*lseek_ptr)(void *ptr, __off_t offset, int whence);
-////};
-////union {
-////        int     (*close_int)(int fd);
-////        int     (*close_ptr)(void *ptr);
-////};
-////int tiny_fs_posix_open(const char* path, int mode, ...);
-////size_t tiny_fs_posix_read(int fd, void* buf, size_t count);
-////size_t tiny_fs_posix_write(int fd, void* buf, size_t count);
-////long int tiny_fs_posix_lseek(int fd, long int offset, int whence);
-////int tiny_fs_posix_close(int fd);
-//
-//#endif      // TINY_FS_POSIX_IO
-
 #ifdef __cplusplus
 } // extern "C"
 #endif      // __cplusplus

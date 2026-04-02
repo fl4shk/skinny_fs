@@ -302,7 +302,7 @@ tiny_fs_sint_t tiny_fs_fread(
         self->pos += byte_count;
         return byte_count;
     } else {
-        const int temp_size = self->f->size - byte_count;
+        const size_t temp_size = self->f->size - byte_count;
         memcpy(buf, self->f->buf + self->pos, temp_size);
         self->pos = self->f->size;
         return temp_size;
