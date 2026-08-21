@@ -29,7 +29,6 @@ struct skinny_fs_file_t {
     //const char* filename;
     uint8_t* buf;
     size_t size;
-
 };
 struct skinny_fs_handle_t {
     skinny_fs_file_t* f;
@@ -102,6 +101,9 @@ skinny_fs_sint_t skinny_fs_fseek(
 );
 skinny_fs_sint_t skinny_fs_ftell(void* handle);
 skinny_fs_sint_t skinny_fs_feof(void* handle);
+skinny_fs_sint_t skinny_fs_rename(
+    const char* old_filename, const char* new_filename
+);
 
 #ifdef __cplusplus
 } // extern "C"

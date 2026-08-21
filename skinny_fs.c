@@ -56,7 +56,7 @@ static skinny_fs_htab_vec_t* _skinny_fs_htab_vec_search_shared(
     skinny_fs_htab_vec_t* ret = some_htab->vec + hash;
     return ret;
 }
-static skinny_fs_file_t* _skinny_fs_htab_search_shared(
+static skinny_fs_htab_elem_t* _skinny_fs_htab_search_for_elem(
     skinny_fs_htab_t* some_htab, const char* key
 ) {
     if (some_htab == NULL) {
@@ -72,8 +72,21 @@ static skinny_fs_file_t* _skinny_fs_htab_search_shared(
             item->key != NULL
             && strcmp(item->key, key) == 0
         ) {
-            return item->v;
+            //return item->v;
+            return item;
         }
+    }
+    return NULL;
+}
+
+static inline skinny_fs_file_t* _skinny_fs_htab_search_shared(
+    skinny_fs_htab_t* some_htab, const char* key
+) {
+    skinny_fs_htab_elem_t* my_elem = _skinny_fs_htab_search_for_elem(
+        some_htab, key
+    );
+    if (my_elem != NULL) {
+        return my_elem->v;
     }
     return NULL;
 }
@@ -109,7 +122,7 @@ static void _skinny_fs_htab_insert_shared(
     }
 }
 
-static void _skinny_fs_htab_maybe_rehash(void) {
+static void _skinny_fs_htab_maybe_rehash(bool keep_current_size) {
     if (skinny_fs_htab == NULL) {
         skinny_fs_htab = (skinny_fs_htab_t*)calloc(
             1ul,
@@ -130,7 +143,10 @@ static void _skinny_fs_htab_maybe_rehash(void) {
     const size_t prev_buf_size_log2 = skinny_fs_htab->vec_size_log2;
     const size_t prev_buf_size = ((size_t)1u) << prev_buf_size_log2;
 
-    if (skinny_fs_htab->most_inner_size > (prev_buf_size >> 1)) {
+    if (
+        skinny_fs_htab->most_inner_size > (prev_buf_size >> 1)
+        || keep_current_size
+    ) {
         // at this point we decide to rehash...
         // maybe having (prev_buf_size / 2)
         // is enough of a size to rehash the hash table?
@@ -138,7 +154,11 @@ static void _skinny_fs_htab_maybe_rehash(void) {
         // It's admittedly an estimated guess as to something
         // that might work somewhat well.
 
-        const size_t next_buf_size_log2 = prev_buf_size_log2 + 1;
+        const size_t next_buf_size_log2 = (
+            keep_current_size
+            ? (prev_buf_size_log2 + 1)
+            : prev_buf_size_log2
+        );
         const size_t next_buf_size = ((size_t)1u) << next_buf_size_log2;
 
         skinny_fs_htab_t* temp_htab = (skinny_fs_htab_t*)malloc(
@@ -175,7 +195,7 @@ static inline void _skinny_fs_htab_insert(
     const char* key,
     skinny_fs_file_t* to_insert
 ) {
-    _skinny_fs_htab_maybe_rehash();
+    _skinny_fs_htab_maybe_rehash(false);
     _skinny_fs_htab_insert_shared(skinny_fs_htab, key, to_insert);
 }
 
@@ -184,7 +204,9 @@ static inline skinny_fs_file_t* _skinny_fs_htab_search(const char* key) {
 }
 
 
-static inline skinny_fs_file_t* _skinny_fs_file_search(const char* filename) {
+static inline skinny_fs_file_t* _skinny_fs_file_search(
+    const char* filename
+) {
     return (skinny_fs_file_t*)_skinny_fs_htab_search(filename);
 }
 
@@ -359,4 +381,18 @@ skinny_fs_sint_t skinny_fs_ftell(void* handle) {
 skinny_fs_sint_t skinny_fs_feof(void* handle) {
     skinny_fs_handle_t* self = (skinny_fs_handle_t*)handle;
     return self->pos >= self->f->size;
+}
+skinny_fs_sint_t skinny_fs_rename(
+    const char* old_filename, const char* new_filename
+) {
+    //skinny_fs_file_t* file = _skinny_fs_file_search(old_filename);
+    skinny_fs_htab_elem_t* temp = _skinny_fs_htab_search_for_elem(
+        skinny_fs_htab, old_filename
+    );
+    if (temp != NULL) {
+        temp->key = new_filename;
+        _skinny_fs_htab_maybe_rehash(true);
+        return 0;
+    }
+    return (skinny_fs_sint_t)(-1);
 }
