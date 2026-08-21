@@ -2,5 +2,5 @@
 
 CFLAGS="-O2" #"-O0 -g" #
 gcc $CFLAGS -c main.c -o main.o \
-&& gcc $CFLAGS -c tiny_fs.c -o tiny_fs.o \
-&& gcc tiny_fs.o main.o -o test_tiny_fs
+&& gcc $CFLAGS -c skinny_fs.c -o skinny_fs.o \
+&& gcc skinny_fs.o main.o -o test_skinny_fs

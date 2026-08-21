@@ -3,5 +3,5 @@
 *.elf
 *-asm.s
 *-dis.s
-test_tiny_fs
+test_skinny_fs
 .gdb_history
