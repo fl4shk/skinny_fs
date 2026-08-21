@@ -1,8 +1,13 @@
 # skinny_fs
 Tiny Entirely-In-RAM Filesystem (i.e. ramdisk) Implementation in C.
 
-This has no dependencies besides your choice of libc, though this does
-*not* rely on `stdio.h`.
+This has no dependencies besides your choice of libc, though `skinny_fs`
+*does not* rely on `stdio.h`,
+besides for use in `main.c` (which is just a test program making use of
+`skinny_fs`).
+
+You can probably ignore `build.sh` and `main.c` unless you want to try out
+the test program
 
 There is also support for situations like the following:
 * For example, a microcontroller where you have read-only files stored in
