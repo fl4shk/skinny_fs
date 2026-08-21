@@ -156,8 +156,8 @@ static void _skinny_fs_htab_maybe_rehash(bool keep_current_size) {
 
         const size_t next_buf_size_log2 = (
             keep_current_size
-            ? (prev_buf_size_log2 + 1)
-            : prev_buf_size_log2
+            ? prev_buf_size_log2
+            : (prev_buf_size_log2 + 1)
         );
         const size_t next_buf_size = ((size_t)1u) << next_buf_size_log2;
 
