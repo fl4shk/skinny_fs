@@ -14,7 +14,7 @@ There is also support for situations like the following:
 the flash memory, subject to the following limitations:
     * Said file must be possible to at least *read from* with a
     dereferenced C pointer.
-    * You must know the size of the file ahead of time.
+    * You must know the initial size of the file ahead of time.
     * A write into the file can end up copying it to a new `malloc()`ed
     file *in RAM* if you end up writing *past* the initial file size.
 
