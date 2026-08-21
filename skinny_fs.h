@@ -6,6 +6,19 @@
 #include <string.h>
 #include <stdint.h>
 
+
+#ifdef SKINNY_FS_SINT_TYPE
+typedef SKINNY_FS_SINT_TYPE skinny_fs_sint_t;
+#else   // if defined(SKINNY_FS_SINT_TYPE)
+typedef long long int skinny_fs_sint_t;
+#endif
+
+#ifdef SKINNY_FS_BYTE_COUNT_TYPE
+typedef SKINNY_FS_BYTE_COUNT_TYPE skinny_fs_byte_count_t;
+#else   // if defined(SKINNY_FS_BYTE_COUNT_TYPE)
+typedef size_t skinny_fs_byte_count_t;
+#endif
+
 typedef enum skinny_fs_seek_t
 {
     SKINNY_FS_SEEK_CUR = 1,
@@ -42,10 +55,6 @@ typedef struct skinny_fs_htab_t skinny_fs_htab_t;
 struct skinny_fs_htab_elem_t {
     const char* key;
     void* v;
-
-    //// make this a doubly-linked list
-    //skinny_fs_htab_elem_t* prev;
-    //skinny_fs_htab_elem_t* next; 
 };
 struct skinny_fs_htab_vec_t {
     skinny_fs_htab_elem_t* buf;
@@ -64,24 +73,6 @@ extern "C" {
 
 //extern skinny_fs_file_t skinny_fs_head;
 extern skinny_fs_htab_t* skinny_fs_htab;
-
-//#ifndef SKINNY_FS_BYTE_COUNT_INT
-//typedef size_t skinny_fs_byte_count_t;
-//#else       // if defined(SKINNY_FS_BYTE_COUNT_INT)
-//typedef int skinny_fs_byte_count_t;
-//#endif      // SKINNY_FS_BYTE_COUNT_INT
-
-#ifdef SKINNY_FS_SINT_TYPE
-typedef SKINNY_FS_SINT_TYPE skinny_fs_sint_t;
-#else
-typedef long long int skinny_fs_sint_t;
-#endif
-
-#ifdef SKINNY_FS_BYTE_COUNT_TYPE
-typedef SKINNY_FS_BYTE_COUNT_TYPE skinny_fs_byte_count_t;
-#else
-typedef size_t skinny_fs_byte_count_t;
-#endif
 
 void* skinny_fs_file_init(
     const char* filename, uint8_t* buf, size_t size
@@ -104,6 +95,14 @@ skinny_fs_sint_t skinny_fs_feof(void* handle);
 skinny_fs_sint_t skinny_fs_rename(
     const char* old_filename, const char* new_filename
 );
+
+//skinny_fs_sint_t skinny_fs_open(
+//    const char* filename, int flags, ... // varargs ignored! 
+//);
+//
+//skinny_fs_sint_t skinny_fs_close(
+//    skinny_fs_sint_t fd
+//);
 
 #ifdef __cplusplus
 } // extern "C"
