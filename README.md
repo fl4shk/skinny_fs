@@ -10,9 +10,9 @@ You can probably ignore `build.sh` and `main.c` unless you want to try out
 the test program
 
 There is also support for situations like the following:
-* For example, a microcontroller where you have read-only files stored in
+* For example, a microcontroller where you have existing files stored in
 the flash memory, subject to the following limitations:
-    * Said read-only file must be possible to at least *read from* with a
+    * Said file must be possible to at least *read from* with a
     dereferenced C pointer.
     * You must know the size of the file ahead of time.
     * A write into the file can end up copying it to a new `malloc()`ed
