@@ -372,7 +372,7 @@ skinny_fs_sint_t skinny_fs_fseek(
     }
         break;
     }
-    return 0;
+    return self->pos;
 }
 skinny_fs_sint_t skinny_fs_ftell(void* handle) {
     skinny_fs_handle_t* self = (skinny_fs_handle_t*)handle;
