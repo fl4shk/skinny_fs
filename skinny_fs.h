@@ -9,13 +9,13 @@
 
 #ifdef SKINNY_FS_SINT_TYPE
 typedef SKINNY_FS_SINT_TYPE skinny_fs_sint_t;
-#else   // if defined(SKINNY_FS_SINT_TYPE)
+#else   // if !defined(SKINNY_FS_SINT_TYPE)
 typedef long long int skinny_fs_sint_t;
 #endif
 
 #ifdef SKINNY_FS_BYTE_COUNT_TYPE
 typedef SKINNY_FS_BYTE_COUNT_TYPE skinny_fs_byte_count_t;
-#else   // if defined(SKINNY_FS_BYTE_COUNT_TYPE)
+#else   // if !defined(SKINNY_FS_BYTE_COUNT_TYPE)
 typedef size_t skinny_fs_byte_count_t;
 #endif
 
